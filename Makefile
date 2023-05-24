@@ -1,5 +1,5 @@
 # Define the name of the target executable
-EXECUTABLE = my_program
+EXECUTABLE = bmbt3ds
 ARM9ELF = arm9/arm9.elf
 # ARM11ELF = arm11.elf
 
@@ -19,10 +19,10 @@ $(EXECUTABLE).firm: $(ARM9ELF)
 	@echo $(ARM9ELF)
 	firmtool build $@ -n 0x08006000 -e 0 -D $< -A 0x08006000 -C memcpy -i
 #	firmtool build $@ -n 0x08006000 -e 0 -D $(ARM9ELF) $(ARM11ELF) -A 0x08006000 -C memcpy -i
-	@cp $(EXECUTABLE).firm boot.firm
+	@cp $@ boot.firm
 
 clean:
 	make -C arm9 clean
-	#make -C arm11 clean
+#   make -C arm11 clean
 	rm -f $(EXECUTABLE).firm
 	rm -f boot.firm
