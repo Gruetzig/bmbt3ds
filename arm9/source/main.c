@@ -1,5 +1,5 @@
 #include "types.h"
-#include "buttons.h"
+#include "drawhid.h"
 #include "i2c.h"
 #include "draw.h"
 #include "timer.h"
@@ -12,17 +12,14 @@ void poweroff() {
 int main(int argc, char *argv[]) {
     i2cInit();
     InitScreenFbs(argc, argv);
-    u8 _funi[2];
-    while (!(HID_PAD & BUTTON_START)) {
+    ClearScreenFull(true, false);
+    HIDContext ctx;
+    readHID(&ctx);
+    while (!(ctx.power)) {
+        readHID(&ctx);
+        DrawHID(&ctx);
         wait_msec(10);
-        i2cReadRegisterBuffer(17, 0, _funi, 2);
-        u8 funi = _funi[1];
-        if ((funi >> 1) & 1) {
-            DrawRecFull(40, 20, 10, 10, COLOR_WHITE, GetScreen(1));
-        }
-        if ((funi >> 2) & 1) {
-            DrawRecFull(60, 20, 10, 10, COLOR_WHITE, GetScreen(1));
-        }
+        
     }
     poweroff();
     return 0;

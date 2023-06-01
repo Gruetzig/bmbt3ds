@@ -1,3 +1,5 @@
+#pragma once
+
 #include "types.h"
 #include "i2c.h"
 #include "buttons.h"
@@ -14,6 +16,7 @@ typedef struct {
     bool start;
     bool select;
     bool home;
+    bool power;
     bool l1;
     bool r1;
     bool l2;

@@ -18,8 +18,8 @@ OBJECTS = $(C_OBJECTS) $(ASM_OBJECTS)
 ELF = arm9.elf
 
 # Define the flags to be passed to the compiler
-CFLAGS = -DARM9 -I$(INCLUDE) -march=$(ARCH) -mthumb -O2 -Wall -lm
-LDFLAGS = -T link.ld -Wl,--nmagic -lm -nostartfiles -specs=nano.specs -specs=nosys.specs 
+CFLAGS = -DARM9 -I$(INCLUDE) -march=$(ARCH) -mthumb -O2 -Wall
+LDFLAGS = -T link.ld -Wl,--nmagic -lm -nostartfiles
  
 # Define the default target to build when no target is specified
 all: $(ELF) $(OBJECTS)

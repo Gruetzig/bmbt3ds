@@ -1,14 +1,32 @@
 #include "hid.h"
 
-u8 buttonbyte;
+u8 zlzrbuf[2];
+
+u8 powhomebuf[0x13];
 
 void readZLZR() {
+    i2cReadRegisterBuffer(17, 0, zlzrbuf, 2);
+}
+
+bool readZL() {
+    return (bool) ((zlzrbuf[1] >> 2) & 1);
     
 }
 
+bool readZR() {
+    return (bool) ((zlzrbuf[1] >> 1) & 1);
+}
+
+void readpowhomefromI2C() {
+    i2cReadRegisterBuffer(I2C_DEV_MCU, 0x7F, powhomebuf, 0x13);
+}
+
 bool readHOMEfromI2C() {
-    u8 sussy = i2cReadRegister(I2C_DEV_MCU, 0x18);
-    return (bool)( (sussy >> 3) & 0x01);
+    return (bool)( (~powhomebuf[0x12] >> 1) & 1);
+}
+
+bool readPOWfromI2C() {
+    return (bool)( (~powhomebuf[0x12] >> 0) & 1);
 }
 
 void readHID(HIDContext* ctx) {
@@ -24,6 +42,11 @@ void readHID(HIDContext* ctx) {
     ctx->select = (HID_PAD & BUTTON_SELECT);
     ctx->r1 = (HID_PAD & BUTTON_R1);
     ctx->l1 = (HID_PAD & BUTTON_L1);
+    readpowhomefromI2C();
     ctx->home = readHOMEfromI2C();
+    ctx->power = readPOWfromI2C();
+    readZLZR();
+    ctx->l2 = readZL();
+    ctx->r2 = readZR();
     
 }
