@@ -98,15 +98,15 @@ void DrawHID(HIDContext *ctx) {
     }
     
     if (ctx->select) {
-        DrawRecFull(350, 210, 40, 20, COLOR_WHITE, GetScreen(1));
-    } else {
-        DrawRecFull(350, 210, 40, 20, COLOR_BLACK, GetScreen(1));
-    }
-    
-    if (ctx->start) {
         DrawRecFull(10, 210, 40, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(10, 210, 40, 20, COLOR_BLACK, GetScreen(1));
+    }
+    
+    if (ctx->start) {
+        DrawRecFull(350, 210, 40, 20, COLOR_WHITE, GetScreen(1));
+    } else {
+        DrawRecFull(350, 210, 40, 20, COLOR_BLACK, GetScreen(1));
     }
     
     if (ctx->home) {
