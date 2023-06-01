@@ -18,3 +18,8 @@ Power off by pressing the POWER button(also a test :p)
 ## Button layout
 
 ![](layout.png)
+
+## Credits
+
+- [firm_linux_loader](https://github.com/linux-3ds/firm_linux_loader) for inspiration on how to do bare-metal stuff
+- [GodMode9](https://github.com/d0k3/GodMode9) for the wait function
