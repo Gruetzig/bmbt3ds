@@ -2,6 +2,7 @@
 #include "buttons.h"
 #include "i2c.h"
 #include "draw.h"
+#include "timer.h"
 
 void poweroff() {
 	i2cWriteRegister(I2C_DEV_MCU, 0x20, 1 << 0);
@@ -9,27 +10,18 @@ void poweroff() {
 }
 
 int main(int argc, char *argv[]) {
+    i2cInit();
     InitScreenFbs(argc, argv);
-    
+    u8 _funi[2];
     while (!(HID_PAD & BUTTON_START)) {
-        u8 funi = i2cReadRegister(17, 1); //this is a test for reading zl/zr, currently broken
-        if ((funi >> 2) & 1) {
-            DrawRecFull(20, 20, 10, 10, COLOR_WHITE, GetScreen(1));
-        }
-        if ((funi >> 3) & 1) {
+        wait_msec(10);
+        i2cReadRegisterBuffer(17, 0, _funi, 2);
+        u8 funi = _funi[1];
+        if ((funi >> 1) & 1) {
             DrawRecFull(40, 20, 10, 10, COLOR_WHITE, GetScreen(1));
         }
-        if ((funi >> 4) & 1) {
+        if ((funi >> 2) & 1) {
             DrawRecFull(60, 20, 10, 10, COLOR_WHITE, GetScreen(1));
-        }
-        if ((funi >> 5) & 1) {
-            DrawRecFull(80, 20, 10, 10, COLOR_WHITE, GetScreen(1));
-        }
-        if ((funi >> 6) & 1) {
-            DrawRecFull(100, 20, 10, 10, COLOR_WHITE, GetScreen(1));
-        }
-        if ((funi >> 7) & 1) {
-            DrawRecFull(120, 20, 10, 10, COLOR_WHITE, GetScreen(1));
         }
     }
     poweroff();

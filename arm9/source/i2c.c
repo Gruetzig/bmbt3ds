@@ -2,12 +2,33 @@
 
 //-----------------------------------------------------------------------------
 
+void i2cInit(void)
+{
+    vu16 *regs = (vu16 *) I2C1_REG_OFF; // Bus 1
+    i2cWaitBusy(0);
+    regs[I2C_REG_CNTEX / 2] = 2;
+    regs[I2C_REG_SCL / 2] = 1280;
+
+    regs = (vu16 *) I2C2_REG_OFF; // Bus 2
+    i2cWaitBusy(1);
+    regs[I2C_REG_CNTEX / 2] = 2;
+    regs[I2C_REG_SCL / 2] = 1280;
+
+    regs = (vu16 *) I2C3_REG_OFF; // Bus 3
+    i2cWaitBusy(2);
+    regs[I2C_REG_CNTEX / 2] = 2;
+    regs[I2C_REG_SCL / 2] = 1280;
+}
+
+//-----------------------------------------------------------------------------
+
 static const struct { u8 bus_id, reg_addr; } dev_data[] = {
 	{ 0, 0x4A }, { 0, 0x7A }, { 0, 0x78 },
 	{ 1, 0x4A }, { 1, 0x78 }, { 1, 0x2C },
 	{ 1, 0x2E }, { 1, 0x40 }, { 1, 0x44 },
 	{ 2, 0xD6 }, { 2, 0xD0 }, { 2, 0xD2 },
 	{ 2, 0xA4 }, { 2, 0x9A }, { 2, 0xA0 },
+	{ 1, 0xEE }, { 0, 0x40 }, { 2, 0x54 },
 };
 
 inline u8 i2cGetDeviceBusId(u8 device_id)

@@ -15,6 +15,8 @@
 #define I2C_DEV_GYRO 10
 #define I2C_DEV_IR   13
 
+void i2cInit();
+
 u8 i2cGetDeviceBusId(u8 device_id);
 u8 i2cGetDeviceRegAddr(u8 device_id);
 
