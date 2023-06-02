@@ -4,6 +4,7 @@ ARM9ELF = arm9/arm9.elf
 # ARM11ELF = arm11.elf
 
 # Define the default target to build when no target is specified
+.PHONY: $(ARM9ELF) clean
 all: $(EXECUTABLE).firm
 
 # Define a rule to build the arm9 elf file
@@ -24,5 +25,5 @@ $(EXECUTABLE).firm: $(ARM9ELF)
 clean:
 	make -C arm9 clean
 #   make -C arm11 clean
-	rm -f $(EXECUTABLE).firm
-	rm -f boot.firm
+	@rm -f $(EXECUTABLE).firm
+	@rm -f boot.firm

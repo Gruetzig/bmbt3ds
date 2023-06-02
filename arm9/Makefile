@@ -39,7 +39,7 @@ $(ELF): $(OBJECTS)
 
 # Define a rule to clean up the project directory
 clean:
-	rm $(ELF)
+	-rm $(ELF)
 	cd source
-	rm -f $(OBJECTS)
+	-rm -f $(OBJECTS)
 	cd ..

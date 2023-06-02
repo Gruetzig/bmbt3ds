@@ -19,7 +19,6 @@ int main(int argc, char *argv[]) {
         readHID(&ctx);
         DrawHID(&ctx);
         wait_msec(10);
-        
     }
     poweroff();
     return 0;
