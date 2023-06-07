@@ -1,5 +1,5 @@
 #include "types.h"
-#include "hid/drawhid.h"
+#include "hid/hid.h"
 #include "i2c.h"
 #include "draw.h"
 #include "timer.h"
