@@ -1,139 +1,91 @@
-#include "drawhid.h"
+#include "hid/drawhid.h"
 
-/*void DrawHID(HIDContext *ctx) {
-    if (ctx->a) {
-        DrawRecFull(370, 110, 20, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->b) {
-        DrawRecFull(340, 140, 20, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->x) {
-        DrawRecFull(340, 80, 20, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->y) {
-        DrawRecFull(310, 110, 20, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->dup) {
-        DrawRecFull(40, 80, 20, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->ddown) {
-        DrawRecFull(40, 140, 20, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->dleft) {
-        DrawRecFull(10, 110, 20, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->dright) {
-        DrawRecFull(70, 110, 20, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->select) {
-        DrawRecFull(350, 210, 40, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->start) {
-        DrawRecFull(10, 210, 40, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->home) {
-        DrawRecFull(180, 210, 40, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->r1) {
-        DrawRecFull(370, 10, 20, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->r2) {
-        DrawRecFull(340, 10, 20, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->l1) {
-        DrawRecFull(10, 10, 20, 20, COLOR_WHITE, GetScreen(1));
-    }
-    if (ctx->l2) {
-        DrawRecFull(40, 10, 20, 20, COLOR_WHITE, GetScreen(1));
-    }
-}*/
-
-void DrawHID(HIDContext *ctx) {
-    if (ctx->a) {
+void DrawHID(u32 *ctx) {
+    if (*ctx & BUTTON_A) {
         DrawRecFull(370, 110, 20, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(370, 110, 20, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->b) {
+    if (*ctx & BUTTON_B) {
         DrawRecFull(340, 140, 20, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(340, 140, 20, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->x) {
+    if (*ctx & BUTTON_X) {
         DrawRecFull(340, 80, 20, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(340, 80, 20, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->y) {
+    if (*ctx & BUTTON_Y) {
         DrawRecFull(310, 110, 20, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(310, 110, 20, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->dup) {
+    if (*ctx & BUTTON_UP) {
         DrawRecFull(40, 80, 20, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(40, 80, 20, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->ddown) {
+    if (*ctx & BUTTON_DOWN) {
         DrawRecFull(40, 140, 20, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(40, 140, 20, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->dleft) {
+    if (*ctx & BUTTON_LEFT) {
         DrawRecFull(10, 110, 20, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(10, 110, 20, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->dright) {
+    if (*ctx & BUTTON_RIGHT) {
         DrawRecFull(70, 110, 20, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(70, 110, 20, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->select) {
+    if (*ctx & BUTTON_SELECT) {
         DrawRecFull(10, 210, 40, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(10, 210, 40, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->start) {
+    if (*ctx & BUTTON_START) {
         DrawRecFull(350, 210, 40, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(350, 210, 40, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->home) {
+    if (*ctx & BUTTON_HOME) {
         DrawRecFull(180, 210, 40, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(180, 210, 40, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->r1) {
+    if (*ctx & BUTTON_R1) {
         DrawRecFull(370, 10, 20, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(370, 10, 20, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->r2) {
+    if (*ctx & BUTTON_R2) {
         DrawRecFull(340, 10, 20, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(340, 10, 20, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->l1) {
+    if (*ctx & BUTTON_L1) {
         DrawRecFull(10, 10, 20, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(10, 10, 20, 20, COLOR_BLACK, GetScreen(1));
     }
     
-    if (ctx->l2) {
+    if (*ctx & BUTTON_L2) {
         DrawRecFull(40, 10, 20, 20, COLOR_WHITE, GetScreen(1));
     } else {
         DrawRecFull(40, 10, 20, 20, COLOR_BLACK, GetScreen(1));
