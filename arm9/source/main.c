@@ -19,6 +19,8 @@
 #include "i2c.h"
 #include "draw.h"
 #include "timer.h"
+#include "print.h"
+#include "console.h"
 
 static inline void poweroff() {
 	i2cWriteRegister(I2C_DEV_MCU, 0x20, 1 << 0);
@@ -29,7 +31,10 @@ int main(int argc, char *argv[]) {
     i2cInit();
     InitScreenFbs(argc, argv);
     ClearScreenFull(true, false);
+    printf("Hello from ARM9\nGo Press some buttons on your %s 3DS ^^", (((*(vu16*) 0x10140FFC) & 2) == 0) ? "Old" : "New");
+    drawConsole();
     u32 ctx;
+    setupHIDBorders();
     readHID(&ctx);
     while (!(ctx & BUTTON_POWER)) {
         readHID(&ctx);

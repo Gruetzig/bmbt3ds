@@ -77,3 +77,13 @@ void DrawRecFull(int x, int y, int w, int h, int color, u8 *screen) {
 		}
 	}
 }
+
+void DrawRecBordered(int x, int y, int w, int h, int color, u8 *screen) {
+	int i;
+	int j;
+	for (i=x;i<=x+w;i++) {
+		for (j=y;j<=y+h;j++) {
+			DrawPixel(i, j, color, screen);
+		}
+	}
+}
