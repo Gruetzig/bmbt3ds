@@ -4,5 +4,5 @@
 
 .global _start
 _start:
-    ldr sp, =20018000
+    ldr sp, =0x20018000
     b main 
