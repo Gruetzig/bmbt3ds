@@ -29,9 +29,9 @@ void setupHIDBorders() {
     DrawRecFull(350-1, 210-1, 40+2, 20+2, COLOR_WHITE, GetScreen(1));
     DrawRecFull(180-1, 210-1, 40+2, 20+2, COLOR_WHITE, GetScreen(1));
     DrawRecFull(370-1, 10-1, 20+2, 20+2, COLOR_WHITE, GetScreen(1));
-    DrawRecFull(340-1, 10-1, 20+2, 20+2, COLOR_WHITE, GetScreen(1));
+    if (((*(vu16*) 0x10140FFC) & 2) != 0) DrawRecFull(340-1, 10-1, 20+2, 20+2, COLOR_WHITE, GetScreen(1)); //new3ds only
     DrawRecFull(10-1, 10-1, 20+2, 20+2, COLOR_WHITE, GetScreen(1));
-    DrawRecFull(40-1, 10-1, 20+2, 20+2, COLOR_WHITE, GetScreen(1));
+    if (((*(vu16*) 0x10140FFC) & 2) != 0) DrawRecFull(40-1, 10-1, 20+2, 20+2, COLOR_WHITE, GetScreen(1)); //new3ds only
 }
 
 void DrawHID(u32 *ctx) {
