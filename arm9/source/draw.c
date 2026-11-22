@@ -1,4 +1,5 @@
 #include "draw.h"
+#include "console/font.h"
 
 static u8 *top_screen0 = NULL;
 static u8 *top_screen1 = NULL;
@@ -71,8 +72,8 @@ void DrawPixel(int x, int y, int color, u8 *screen) { //stolen from GodMode9 :))
 void DrawRecFull(int x, int y, int w, int h, int color, u8 *screen) {
 	int i;
 	int j;
-	for (i=x;i<=x+w;i++) {
-		for (j=y;j<=y+h;j++) {
+	for (i=x;i<x+w;i++) {
+		for (j=y;j<y+h;j++) {
 			DrawPixel(i, j, color, screen);
 		}
 	}
@@ -81,9 +82,76 @@ void DrawRecFull(int x, int y, int w, int h, int color, u8 *screen) {
 void DrawRecBordered(int x, int y, int w, int h, int color, u8 *screen) {
 	int i;
 	int j;
-	for (i=x;i<=x+w;i++) {
-		for (j=y;j<=y+h;j++) {
+	for (i=x;i<x+w;i++) {
+		for (j=y;j<y+h;j++) {
 			DrawPixel(i, j, color, screen);
 		}
 	}
+}
+
+// ref to top left corner
+void DrawChar(int x, int y, char chr, int color, bool swap_xy, u8 *screen) {
+    int i;
+    int j;
+    for (i=0;i<8;i++) {
+        for (j=0;j<8;j++) {
+            bool set = 0;
+            if (swap_xy) {
+                if (font[((int)chr)*8+i] & (1 << (7-j))) set = 1;
+            } else {
+                if (font[((int)chr)*8+j] & (1 << (7-i))) set = 1;
+            }
+            if (set) DrawPixel(x+i, y+j, color, screen);
+        }
+    }
+}
+
+void DrawText(int x, int y, char* str, int color, bool swap_xy, u8 *screen) {
+    while (*str > 0) {
+        DrawChar(x, y, *str, color, swap_xy, screen);
+        str++;
+        x += 8;
+    }
+}
+
+// will go wrong if ever draw u32... but we don't
+// ndigit doesn't include negative sign
+// maybe easier to just use snprintf...? meh
+void DrawHex(int x, int y, s32 num, int ndigit, bool sign, int color, u8 *screen) {
+    int i;
+    bool negative = false;
+    bool printed = false;
+
+    if (num == 0) {
+        x += 8 * (ndigit - 1) + (sign ? 8 : 0);
+        DrawChar(x, y, '0', color, false, screen);
+        return;
+    }
+
+    if (num < 0) {
+        negative = true;
+        num = -num;
+    }
+    // add space when negative and draw signed
+    // otherwise, only draw negative sign right before printing first nibble
+    if (sign && !negative) {
+        x += 8;
+    }
+    for (i=0;i<ndigit;i++,x+=8) {
+        s32 digit = (num >> (4*(ndigit-i-1))) & 0xF;
+        if (digit == 0 && printed) {
+            DrawChar(x, y, '0', color, false, screen);
+        } else {
+            if (sign && negative && !printed) {
+                DrawChar(x, y, '-', color, false, screen);
+                x += 8;
+            }
+            printed = true;
+            if (digit < 0xA) {
+                DrawChar(x, y, '0'+digit, color, false, screen);
+            } else {
+                DrawChar(x, y, 'A'+digit-0xA, color, false, screen);
+            }
+        }
+    }
 }

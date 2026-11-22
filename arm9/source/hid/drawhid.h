@@ -17,5 +17,7 @@
 #include "draw.h"
 #include "hid/hid.h"
 
-void DrawHID(u32 *ctx);
+void DrawHID(u32 *ctx, u32 *octx);
+void DrawAnalog(analog *ctx, u16 diff);
 void setupHIDBorders();
+void setupAnalogLabels();

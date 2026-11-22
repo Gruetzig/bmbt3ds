@@ -49,3 +49,11 @@
 #define BUTTON_L2 (1 << 13)
 #define BUTTON_HOME (1 << 14)
 #define BUTTON_POWER (1 << 15)
+
+typedef struct {
+    s16 cpad_x, cpad_y;
+    s16 cstick_x, cstick_y;
+    u16 ts_x, ts_y;
+    u8 vol, s3d;
+    u16 dummy;
+} analog;

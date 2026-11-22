@@ -28,3 +28,5 @@ void ClearScreenFull(bool clear_top, bool clear_bottom);
 u8* GetScreen(int screen);
 void DrawPixel(int x, int y, int color, u8 *screen);
 void DrawRecFull(int x, int y, int w, int h, int color, u8 *screen);
+void DrawText(int x, int y, char* str, int color, bool swap_xy, u8 *screen);
+void DrawHex(int x, int y, s32 num, int ndigit, bool sign, int color, u8 *screen);
