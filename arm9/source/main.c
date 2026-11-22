@@ -16,6 +16,8 @@
 
 #include "types.h"
 #include "hid/hid.h"
+#include "hid/spi.h"
+#include "hid/codec.h"
 #include "i2c.h"
 #include "draw.h"
 #include "timer.h"
@@ -29,16 +31,32 @@ static inline void poweroff() {
 
 int main(int argc, char *argv[]) {
     i2cInit();
+    SPI_Init();
+    CODEC_Init();
     InitScreenFbs(argc, argv);
     ClearScreenFull(true, false);
     printf("Hello from ARM9\nGo Press some buttons on your %s 3DS ^^", (((*(vu16*) 0x10140FFC) & 2) == 0) ? "Old" : "New");
     drawConsole();
-    u32 ctx;
+    u32 ctx, oldctx;
+    analog actx, oldactx;
     setupHIDBorders();
+    setupAnalogLabels();
     readHID(&ctx);
+    readAnalog(&actx);
+    oldctx = ~ctx; // force first draw
+    DrawAnalog(&actx, 0);
     while (!(ctx & BUTTON_POWER)) {
         readHID(&ctx);
-        DrawHID(&ctx);
+        if (ctx != oldctx) {
+            DrawHID(&ctx, &oldctx);
+            oldctx = ctx;
+        }
+        readAnalog(&actx);
+        u16 analog_diff = cmpAnalog(&actx, &oldactx);
+        if (analog_diff != 0) {
+            DrawAnalog(&actx, analog_diff);
+            copyAnalog(&oldactx, &actx);
+        }
         wait_msec(10);
     }
     poweroff();

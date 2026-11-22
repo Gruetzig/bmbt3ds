@@ -14,7 +14,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <string.h>
+
 #include "hid/hid.h"
+#include "hid/codec.h"
+
+#define CPAD_DIFF_LIMIT   0x8
+#define CSTICK_DIFF_LIMIT 0x8
+#define TOUCH_DIFF_LIMIT  0x8
+#define SLIDER_DIFF_LIMIT 0x1
+
+#define withinDiff(n1, n2, limit, bit) \
+    ((((n1)-(n2)) > -limit && ((n1)-(n2)) < limit ? 0 : 1) << bit)
 
 u8 zlzrbuf[2];
 
@@ -66,5 +77,44 @@ void readHID(u32 *ctx) {
     *ctx += readZL()                     ? BUTTON_L2    : 0;
     *ctx += readZR()                     ? BUTTON_R2    : 0;
     
+}
+
+void read3DSliderfromI2C(u8* s3d) {
+    i2cReadRegisterBuffer(I2C_DEV_MCU, 0x08, s3d, 1);
+}
+
+void readVolumeSliderfromI2C(u8* vol) {
+    i2cReadRegisterBuffer(I2C_DEV_MCU, 0x09, vol, 1);
+}
+
+void readAnalog(analog *ctx) {
+    memset(ctx, 0, sizeof(analog));
+
+    CODEC_Get(ctx);
+
+    read3DSliderfromI2C(&ctx->s3d);
+    readVolumeSliderfromI2C(&ctx->vol);
+}
+
+/*
+u16 withinDiff(s32 n1, s32 n2, s32 limit, int bit) {
+    s32 diff = n1 - n2;
+    return (diff > -limit && diff < limit ? 0 : 1) << bit;
+}
+*/
+
+u16 cmpAnalog(analog* s1, analog* s2) {
+    return withinDiff(s1->cpad_x, s2->cpad_x, CPAD_DIFF_LIMIT, 0) |
+           withinDiff(s1->cpad_y, s2->cpad_y, CPAD_DIFF_LIMIT, 1) |
+           withinDiff(s1->cstick_x, s2->cstick_x, CSTICK_DIFF_LIMIT, 2) |
+           withinDiff(s1->cstick_y, s2->cstick_y, CSTICK_DIFF_LIMIT, 3) |
+           withinDiff(s1->ts_x, s2->ts_x, TOUCH_DIFF_LIMIT, 4) |
+           withinDiff(s1->ts_y, s2->ts_y, TOUCH_DIFF_LIMIT, 5) |
+           withinDiff(s1->vol, s2->vol, SLIDER_DIFF_LIMIT, 6) |
+           withinDiff(s1->s3d, s2->s3d, SLIDER_DIFF_LIMIT, 7);
+}
+
+void copyAnalog(analog* dest, analog* src) {
+    memcpy(dest, src, sizeof(analog));
 }
 

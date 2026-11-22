@@ -21,5 +21,7 @@
 #include "hid/buttons.h"
 #include "drawhid.h"
 
-
 void readHID(u32* ctx);
+void readAnalog(analog* ctx);
+u16 cmpAnalog(analog* s1, analog* s2);
+void copyAnalog(analog* dest, analog* src);
