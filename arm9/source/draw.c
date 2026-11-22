@@ -132,7 +132,7 @@ void DrawHex(int x, int y, s32 num, int ndigit, bool sign, int color, u8 *screen
         negative = true;
         num = -num;
     }
-    // add space when negative and draw signed
+    // add space when positive and draw signed
     // otherwise, only draw negative sign right before printing first nibble
     if (sign && !negative) {
         x += 8;
